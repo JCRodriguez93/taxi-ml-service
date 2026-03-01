@@ -2,6 +2,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import joblib
+import numpy as np  # <-- necesario para usar arrays correctamente
 
 app = FastAPI()
 
@@ -18,7 +19,7 @@ def root():
 
 @app.post("/predict")
 def predict_price(trip: TripRequest):
-    # Predecir usando ML real
-    features = [[trip.distance_km, trip.duration_min]]
+    # Predecir usando ML real (usar np.array con shape correcto)
+    features = np.array([[trip.distance_km, trip.duration_min]])
     estimated_price = model.predict(features)[0]
     return {"estimated_price": round(estimated_price, 2)}

@@ -3,6 +3,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 from sklearn.linear_model import LinearRegression
 import joblib
+import os
 
 # 1. Conectar a Postgres
 engine = create_engine("postgresql://postgres:admin@localhost:5432/taxi_db")
@@ -18,7 +19,8 @@ y = df["estimated_price"]
 model = LinearRegression()
 model.fit(X, y)
 
-# 5. Guardar modelo entrenado a disco
-joblib.dump(model, "trip_price_model.pkl")
+# 5. Guardar modelo entrenado a disco en ruta segura
+model_path = os.path.join(os.path.dirname(__file__), "trip_price_model.pkl")
+joblib.dump(model, model_path)
 
-print("Modelo entrenado y guardado ✅")
+print(f"Modelo entrenado y guardado ✅ en {model_path}")
